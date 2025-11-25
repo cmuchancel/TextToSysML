@@ -1,0 +1,22 @@
+﻿ROLE
+You are a systems engineer generating a complete SysML v2 model from a requirements document.
+
+
+INPUT — REQUIREMENTS DOCUMENT
+<<PASTE REQUIREMENTS TEXT HERE>>
+formal-25-09-05.pdf (Formal SysMLv2 Requirements)
+
+
+TASK
+- Create or overwrite a single file named: SystemModel.sysml
+- The file must contain a complete SysML v2 model for the system described 
+above.
+
+
+- Use correct SysML v2 syntax and keywords, as specified by the pdf in your context window. Read with PYPDF or another PDF reader. 
+- Include every relevant requirement (structure, parts, requirements, connections/ports, simple behaviors or constraints if implied, units/quantities when stated).
+
+
+OUTPUT
+- Write only the file `SystemModel.sysml` (no markdown, no code fences, no commentary).
+- Do not output anything else.

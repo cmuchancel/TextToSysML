@@ -1,0 +1,325 @@
+﻿package EnduranceSurveillanceUAV {
+
+
+doc /* SysML v2 textual model for an endurance surveillance unmanned aerial vehicle (UAV) derived from project requirements and OMG SysML v2 Part 2 (formal/2025-09-05). */
+
+
+part def EnduranceSurveillanceDrone {
+    doc /* Top-level UAV assembly integrating propulsion, energy storage, avionics, payload, communications, and launch interfaces. */
+    part airframe : AirframeStructure;
+    part propulsion : PropulsionSystem;
+    part energy : EnergyStorageSystem;
+    part avionics : AvionicsSuite;
+    part payload : SurveillancePayload;
+    part comms : CommunicationLink;
+    part launchRecovery : LaunchRecoveryInterface;
+
+
+    attribute missionRange {
+        doc /* Horizontal flight range capability targeted at 100 miles with acceptable range between 50 and 150 miles. */
+    }
+    attribute missionEndurance {
+        doc /* Mission endurance of at least 2 hours continuous flight. */
+    }
+    attribute grossWeight {
+        doc /* Total takeoff weight not exceeding 50 pounds allowing carriage by two average people. */
+    }
+
+
+    constraint def RangeAndEnduranceAchieved {
+        calc rangeAndEnduranceAchieved {
+            language "English"
+            /*
+            * Integrating aerodynamic efficiency, propulsion performance, and energy storage enables 100 mile nominal range (± 50 miles) with no less than 2 hours endurance under nominal conditions.
+            */
+        }
+    }
+
+
+    constraint def WeightWithinTwoPersonCarry {
+        calc weightWithinTwoPersonCarry {
+            language "English"
+            /*
+            * Structural design, component selection, and battery sizing keep gross weight at or below 50 pounds so two people can transport the UAV.
+            */
+        }
+    }
+
+
+    constraint def LaunchRecoveryOptions {
+        calc launchRecoveryOptions {
+            language "English"
+            /*
+            * UAV supports launch via portable slingshot system or pilot initiated ground takeoff and enables recovery to ground without specialized arresting gear.
+            */
+        }
+    }
+
+
+    constraint def UsesOffTheShelfComponents {
+        calc usesOffTheShelfComponents {
+            language "English"
+            /*
+            * Propulsion, avionics, payload sensors, communications, and structural elements rely on commercially available off-the-shelf components with minimal integration tailoring.
+            */
+        }
+    }
+
+
+    constraint def EnvironmentalResilience {
+        calc environmentalResilience {
+            language "English"
+            /*
+            * UAV subsystems are designed to operate across the environmental extremes defined by the program (temperature, precipitation, wind) once values are finalized.
+            */
+        }
+    }
+
+
+    assert constraint enforceRangeEndurance : RangeAndEnduranceAchieved;
+    assert constraint enforceWeight : WeightWithinTwoPersonCarry;
+    assert constraint enforceLaunchRecovery : LaunchRecoveryOptions;
+    assert constraint enforceCotsUsage : UsesOffTheShelfComponents;
+    assert constraint enforceEnvironment : EnvironmentalResilience;
+}
+
+
+part def AirframeStructure {
+    doc /* Structural shell and lifting surfaces providing aerodynamic efficiency and mounting for subsystems. */
+    attribute wingspan {
+        doc /* Wingspan sized to balance lift and portability for ground handling. */
+    }
+    attribute fuselageVolume {
+        doc /* Internal volume for integrating batteries, avionics, payload, and communications equipment. */
+    }
+    attribute attachmentPoints {
+        doc /* Interfaces for propulsion units, launch fittings, and payload mounts. */
+    }
+
+
+    constraint def ProvidesLiftAndIntegration {
+        calc providesLiftAndIntegration {
+            language "English"
+            /*
+            * Airframe geometry supports efficient cruise flight for a two hour endurance while providing structural mounting for subsystems without exceeding weight limits.
+            */
+        }
+    }
+
+
+    assert constraint enforceStructure : ProvidesLiftAndIntegration;
+}
+
+
+part def PropulsionSystem {
+    doc /* Propulsion solution delivering thrust and efficiency to meet range and endurance requirements. */
+    attribute propulsionType {
+        doc /* Selection of electric motor, propeller configuration, and controller sourced from OTS vendors. */
+    }
+    attribute specificEfficiency {
+        doc /* Propulsion efficiency contributing to extended range and endurance. */
+    }
+    attribute redundancyApproach {
+        doc /* Measures ensuring propulsion reliability over extended missions. */
+    }
+
+
+    constraint def SupportsRangeEndurance {
+        calc supportsRangeEndurance {
+            language "English"
+            /*
+            * Propulsion unit sizing and efficiency enable nominal 100 mile range while sustaining thrust for at least two hours without overtaxing energy reserves.
+            */
+        }
+    }
+
+
+    assert constraint enforcePropulsionPerformance : SupportsRangeEndurance;
+}
+
+
+part def EnergyStorageSystem {
+    doc /* Battery or hybrid energy storage supplying power for propulsion, avionics, and payload over mission duration. */
+    attribute energyCapacity {
+        doc /* Stored energy sized to deliver no less than two hours flight with reserves, providing a 10 MW capacity target. */
+    }
+    attribute stateOfHealthMonitoring {
+        doc /* Health monitoring to inform remaining capacity during mission. */
+    }
+    attribute rechargeTime {
+        doc /* Time needed to recharge or swap energy modules between sorties. */
+    }
+
+
+    constraint def ProvidesMissionPower {
+        calc providesMissionPower {
+            language "English"
+            /*
+            * Energy storage capacity and power management satisfy full mission power demands for propulsion, avionics, payload, and communications for at least two hours.
+            */
+        }
+    }
+
+
+    constraint def EnergyCapacityTargets10MW {
+        calc energyCapacityTargets10MW {
+            language "English"
+            /*
+            * Energy storage modules deliver a total energy capacity equivalent to 10 MW, aligning with mission-level power requirements.
+            */
+        }
+    }
+
+
+    assert constraint enforceMissionPower : ProvidesMissionPower;
+    assert constraint enforceEnergyCapacity : EnergyCapacityTargets10MW;
+}
+
+
+part def AvionicsSuite {
+    doc /* Flight control, navigation, and mission management electronics. */
+    attribute flightController {
+        doc /* OTS autopilot governing stability, guidance, and control. */
+    }
+    attribute navigationSolution {
+        doc /* Sensors and algorithms providing position, velocity, and attitude knowledge for the mission profile. */
+    }
+    attribute dataHandling {
+        doc /* Onboard data management to route payload and system telemetry. */
+    }
+
+
+    constraint def MaintainsFlightStability {
+        calc maintainsFlightStability {
+            language "English"
+            /*
+            * Avionics integrate sensors and control laws that maintain stable flight throughout two hour endurance missions and support both launch methods.
+            */
+        }
+    }
+
+
+    assert constraint enforceAvionics : MaintainsFlightStability;
+}
+
+
+part def SurveillancePayload {
+    doc /* Imaging payload providing 1080p video capture and mission-duration storage. */
+    attribute cameraResolution {
+        doc /* Full HD (1080p) electro-optical camera selected from OTS catalog. */
+    }
+    attribute stabilization {
+        doc /* Gimbal or electronic stabilization maintaining image quality during maneuvers. */
+    }
+    attribute onboardStorage {
+        doc /* Memory sized to record entire two hour mission at 1080p quality. */
+    }
+
+
+    constraint def ProvidesMissionImagery {
+        calc providesMissionImagery {
+            language "English"
+            /*
+            * Payload continuously captures 1080p imagery, stores the complete mission duration locally, and interfaces with communications for live transmission when available.
+            */
+        }
+    }
+
+
+    assert constraint enforcePayload : ProvidesMissionImagery;
+}
+
+
+part def CommunicationLink {
+    doc /* Communications subsystem handling command/control and video/data transmission. */
+    attribute commandLink {
+        doc /* Primary control link leveraging OTS radios with necessary range. */
+    }
+    attribute videoDownlink {
+        doc /* Optional live 1080p downlink extending over required range or routing via recorded storage when bandwidth limited. */
+    }
+    attribute encryptionApproach {
+        doc /* Security measures applied to command and video channels. */
+    }
+
+
+    constraint def MaintainsMissionLinks {
+        calc maintainsMissionLinks {
+            language "English"
+            /*
+            * Communications architecture supports command and optional video transmission across the mission range while ensuring data integrity.
+            */
+        }
+    }
+
+
+    assert constraint enforceComms : MaintainsMissionLinks;
+}
+
+
+part def LaunchRecoveryInterface {
+    doc /* Interfaces and procedures supporting both slingshot and ground-based launch along with safe recovery. */
+    attribute launchMethod {
+        doc /* Compatibility with portable slingshot launching hardware. */
+    }
+    attribute groundTakeoffProcedure {
+        doc /* Steps and clearances enabling pilot initiated ground takeoff. */
+    }
+    attribute recoveryApproach {
+        doc /* Recovery method accommodating varied environments without specialized equipment. */
+    }
+
+
+    constraint def SupportsDualLaunch {
+        calc supportsDualLaunch {
+            language "English"
+            /*
+            * Interfaces allow attachment to slingshot launcher and also provide landing gear or skids for ground launch and recovery.
+            */
+        }
+    }
+
+
+    assert constraint enforceLaunchOptions : SupportsDualLaunch;
+}
+
+
+requirement def RangeRequirement {
+    doc /* The UAV shall achieve a 100 mile ± 50 mile mission range with at least two hours endurance. Satisfied by EnduranceSurveillanceDrone::RangeAndEnduranceAchieved and PropulsionSystem::SupportsRangeEndurance. */
+}
+
+
+requirement def PayloadRequirement {
+    doc /* The UAV shall include a 1080p camera with storage for the full mission duration. Satisfied by SurveillancePayload::ProvidesMissionImagery. */
+}
+
+
+requirement def WeightRequirement {
+    doc /* The UAV gross weight shall not exceed 50 pounds and shall be transportable by two people. Satisfied by EnduranceSurveillanceDrone::WeightWithinTwoPersonCarry and AirframeStructure::ProvidesLiftAndIntegration. */
+}
+
+
+requirement def LaunchRequirement {
+    doc /* The UAV shall support both slingshot and pilot ground launch with safe recovery. Satisfied by EnduranceSurveillanceDrone::LaunchRecoveryOptions and LaunchRecoveryInterface::SupportsDualLaunch. */
+}
+
+
+requirement def EnvironmentalRequirement {
+    doc /* The UAV shall operate across the specified extreme environmental conditions (values TBD). Satisfied by EnduranceSurveillanceDrone::EnvironmentalResilience. */
+}
+
+
+requirement def OffTheShelfRequirement {
+    doc /* The UAV design shall use off-the-shelf components with minimal tailoring. Satisfied by EnduranceSurveillanceDrone::UsesOffTheShelfComponents and subsystem level constraints. */
+}
+
+
+requirement def VerificationApproach {
+    doc /* Verification of system requirements shall use demonstration, inspection, analysis, and test methods per the specification. */
+}
+
+
+requirement def EnergyCapacityRequirement {
+    doc /* The energy storage system shall provide an energy capacity of 10 MW. Satisfied by EnergyStorageSystem::EnergyCapacityTargets10MW. */
+}
+}
